@@ -11,6 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -21,7 +22,7 @@ import java.util.Set;
 @Getter
 @NoArgsConstructor
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -36,13 +37,10 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public String getAuthority() {
-        return "ROLE_" + roleName;
-    }
-
     public void addUser(User user) {
         users.add(user);
     }
+
 
     @Override
     public int hashCode() {
@@ -64,5 +62,10 @@ public class Role {
         Role other = (Role) obj;
         return id == other.id &&
                 Objects.equals(roleName, other.roleName);
+    }
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + roleName;
     }
 }

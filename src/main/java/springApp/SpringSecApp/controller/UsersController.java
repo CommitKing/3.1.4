@@ -9,22 +9,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import springApp.SpringSecApp.service.UserService;
+import springApp.SpringSecApp.service.UserServiceImpl;
 
 
 @Controller
 public class UsersController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UsersController(UserService userService) {
-        this.userService = userService;
+    public UsersController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping(value = "/users")
     public String users(Model model) {
-        model.addAttribute("users", userService.getAllUsers());
+        model.addAttribute("users", userServiceImpl.getAllUsers());
         return "users";
     }
 
@@ -35,7 +35,7 @@ public class UsersController {
 
     @GetMapping(value = "users/editUser")
     public String editUser(Model model, @RequestParam("id") int id) {
-        User user = userService.findById(id);
+        User user = userServiceImpl.findById(id);
         model.addAttribute("user", user);
         return "editUser";
     }
@@ -46,13 +46,13 @@ public class UsersController {
             model.addAttribute("user", user);
             return "addUser";
         }
-        userService.save(user);
+        userServiceImpl.save(user);
         return "redirect:/users";
     }
 
     @PostMapping(value = "/users/deleteUser")
     public String deleteUser(@RequestParam(name = "id") int id) {
-        userService.delete(userService.findById(id));
+        userServiceImpl.delete(userServiceImpl.findById(id));
         return "redirect:/users";
     }
 
@@ -62,9 +62,9 @@ public class UsersController {
             model.addAttribute("user", user);
             return "editUser";
         }
-        User existingUser = userService.findById(user.getId());
-        existingUser = userService.updateUserInfo(user, existingUser);
-        userService.update(existingUser);
+        User existingUser = userServiceImpl.findById(user.getId());
+        existingUser = userServiceImpl.updateUserInfo(user, existingUser);
+        userServiceImpl.update(existingUser);
         return "redirect:/users";
     }
 

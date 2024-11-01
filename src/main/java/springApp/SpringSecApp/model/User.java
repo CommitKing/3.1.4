@@ -77,14 +77,16 @@ public class User {
     }
 
     public void addRole(Role role) {
-        roles.add(role);
-        role.addUser(this);
+        if (!roles.contains(role)) {
+            roles.add(role);
+            role.addUser(this);
+        }
     }
 
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", username=" + username + ", password=" + password + ", email=" + email + ", phoneNumber=" + phoneNumber + ", age=" + age + ", sex=" + sex + "]";
+        return "User [id=" + id + ", username=" + username + ", email=" + email + ", phoneNumber=" + phoneNumber + ", age=" + age + ", sex=" + sex + "]";
     }
 
     @Override
