@@ -1,19 +1,14 @@
 package springApp.SpringSecApp.UserDetails;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import springApp.SpringSecApp.model.User;
 
 import java.util.Collection;
-import java.util.List;
 
-public class UserDetailsImpl implements UserDetails {
-    private final User user;
-
-    public UserDetailsImpl(User user) {
-        this.user = user;
-    }
+@Getter
+public record UserDetailsImpl(User user) implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
