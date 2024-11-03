@@ -2,6 +2,7 @@ package springApp.SpringSecApp.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,33 +28,40 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/add-user")
-    public String addUser() {
-        return "admin/add-user";
-    }
-
-    @GetMapping("/edit-user")
-    public String editUser(@RequestParam("id") int id, Model model) {
-        User user = userService.findUserByIdWithRole(id);
-        model.addAttribute("user", user);
-        return "admin/edit-user";
-    }
-
     @GetMapping("/users-panel")
     public String usersPanel(Model model) {
         model.addAttribute("users", userService.findAllUsersWithRoles());
         return "admin/users-panel";
     }
 
-    @PostMapping("/add-user")
+    @GetMapping("/users-panel/add-user")
+    public String addUser(Model model) {
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/add-user";
+    }
+
+    @GetMapping("/users-panel/edit-user")
+    public String editUser(@RequestParam("id") int id, Model model) {
+        model.addAttribute("user", userService.findUserByIdWithRole(id));
+        model.addAttribute("roles", roleService.getAllRoles());
+        return "admin/edit-user";
+    }
+
+    @PostMapping("/users-panel/add-user")
     public String addUser(@ModelAttribute("user") @Valid User user) {
         userService.save(user);
         return "redirect:/admin/users-panel";
     }
 
-    @PostMapping("/edit-user")
-    public String editUser(@Valid User user) {
+    @PostMapping("/users-panel/edit-user")
+    public String editUser(@ModelAttribute("user") @Valid User user) {
         userService.save(user);
+        return "redirect:/admin/users-panel";
+    }
+
+    @PostMapping("/users-panel/delete-user")
+    public String deleteUser(@RequestParam("id") int id) {
+        userService.delete(userService.findUserByIdWithRole(id));
         return "redirect:/admin/users-panel";
     }
 }

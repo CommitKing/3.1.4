@@ -12,25 +12,29 @@
   <table>
     <thead>
     <tr>
-      <th>name</th>
+      <th>username</th>
       <th>email</th>
+      <th>phone number</th>
+      <th>age</th>
+      <th>sex</th>
       <th>role</th>
-      <th></th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="user : ${users}">
       <td th:utext="${user.getUsername()}"></td>
       <td th:utext="${user.getEmail()}"></td>
+      <td th:utext="${user.getPhoneNumber()}"></td>
+      <td th:utext="${user.getAge()}"></td>
+      <td th:utext="${user.getSex()}"></td>
       <td th:each="role : ${user.getRoles()}" th:text="${role.getRoleName()}"></td>
       <td>
-        <a th:href="@{edit_panel/edit_user(id=${user.getId()})}">
+        <a th:href="@{edit-panel/edit-user(id=${user.getId()})}">
           <button type="button">edit</button>
         </a>
       </td>
       <td>
-        <form th:action="@{edit_panel/delete_user(id=${user.getId()})}" th:method="POST">
+        <form th:action="@{edit-panel/delete-user(id=${user.getId()})}" th:method="POST">
           <button type="submit">delete</button>
         </form>
       </td>
@@ -39,7 +43,7 @@
   </table>
 </main>
 <footer>
-  <a th:href="@{edit_panel/new_user}">add</a><br>
+  <a th:href="@{edit-panel/new-user}">add new user</a><br>
   <br>
   <form th:action="@{/logout}" method="post">
     <button type="submit">logout</button>

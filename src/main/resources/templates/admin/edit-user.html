@@ -1,49 +1,61 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Edit panel</title>
+    <meta charset="UTF-8">
+    <title>Edit user</title>
 </head>
 <body>
 <header>
-  <h3>Edit panel</h3>
+    <a th:href="@{/admin/edit-panel}">Cancel</a>
+    <h3>Edit</h3>
 </header>
 <main>
-  <table>
-    <thead>
-    <tr>
-      <th>name</th>
-      <th>email</th>
-      <th>role</th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="user : ${users}">
-      <td th:utext="${user.getUsername()}"></td>
-      <td th:utext="${user.getEmail()}"></td>
-      <td th:each="role : ${user.getRoles()}" th:text="${role.getRoleName()}"></td>
-      <td>
-        <a th:href="@{edit_panel/edit_user(id=${user.getId()})}">
-          <button type="button">edit</button>
-        </a>
-      </td>
-      <td>
-        <form th:action="@{edit_panel/delete_user(id=${user.getId()})}" th:method="POST">
-          <button type="submit">delete</button>
-        </form>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+    <form th:method="POST" th:action="@{/admin/edit-panel/edit-user}" th:object="${user}">
+        <fieldset>
+            <legend>form:</legend>
+            <br/>
+            <label for="username">1: </label>
+            <input type="text" th:field="*{username}" id="username"/>
+            <br/>
+            <label for="password">2: </label>
+            <input type="password" th:field="*{password}" id="password"/>
+            <br/>
+            <label for="email">3: </label>
+            <input type="text" th:field="*{email}" id="email"/>
+            <br/>
+            <label for="proneNumber">4: </label>
+            <input type="text" th:field="*{phoneNumber}" id="proneNumber"/>
+            <br/>
+            <label for="id">5: </label>
+            <input type="number" th:field="*{id}" id="id"/>
+            <br/>
+            <label for="sex">6: </label>
+            <input type="text" th:field="*{sex}" id="sex"/>
+            <br>
+            <label for="age">7: </label>
+            <input type="number" th:field="*{age}" id="age"/>
+            <br>
+            <br>
+            <div th:each="role : ${roles}">
+                <label>
+                    <input type="checkbox"
+                           th:id="'role_' + ${role.id}"
+                           th:name="roles"
+                           th:value="${role.id}"
+                           th:checked="${user.roles.contains(role)}"/>
+                </label>
+                <label th:for="'role_' + ${role.id}" th:text="${role.getRoleName()}"></label>
+            </div>
+        </fieldset>
+        <br/>
+        <input type="submit" value="confirm"/>
+    </form>
+    <br>
 </main>
 <footer>
-  <a th:href="@{edit_panel/new_user}">add</a><br>
-  <br>
-  <form th:action="@{/logout}" method="post">
-    <button type="submit">logout</button>
-  </form>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit">logout</button>
+    </form>
 </footer>
 </body>
 </html>
