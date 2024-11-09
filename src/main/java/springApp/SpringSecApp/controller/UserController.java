@@ -23,10 +23,10 @@ public class UserController {
     }
 
 
-    @GetMapping("/user")
+    @GetMapping("/user/profile")
     public String userProfile(Authentication authentication, Model model) {
         String username = authentication.getName();
-        User user = userService.findByUsername(username);
+        User user = userService.getUserByUsername(username);
         model.addAttribute("user", user);
         return "user/profile";
     }

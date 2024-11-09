@@ -9,17 +9,24 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.stream.Stream;
 
 @Component
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String redirectUrl = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .flatMap(auth -> auth.equals("ROLE_USER") ? Stream.of("/user") :
-                        auth.equals("ROLE_ADMIN") ? Stream.of("/admin/edit-panel") :
-                                Stream.empty()).findFirst().orElse("/login");
+        String redirectUrl = "/login"; // URL по умолчанию
+
+        for (GrantedAuthority authority : authentication.getAuthorities()) {
+            String role = authority.getAuthority();
+            if ("ROLE_USER".equals(role)) {
+                redirectUrl = "/user/profile";
+                break; // Прерываем цикл, так как URL уже найден
+            } else if ("ROLE_ADMIN".equals(role)) {
+                redirectUrl = "/admin/edit-panel";
+                break; // Прерываем цикл, так как URL уже найден
+            }
+        }
+
         response.sendRedirect(redirectUrl);
     }
 }

@@ -1,14 +1,13 @@
 package springApp.SpringSecApp.service;
 
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import springApp.SpringSecApp.model.User;
 
 import java.util.List;
 
-public interface UserService {
-    void save(User user);
-
-    void update(User user, User updatedUser);
+public interface UserService extends UserDetailsService {
+    /*void save(User user);
 
     void delete(User user);
 
@@ -16,5 +15,21 @@ public interface UserService {
 
     List<User> findAllUsersWithRoles();
 
-    User findUserByIdWithRole(int id);
+    User findUserByIdWithRoles(int id);
+
+    UserDetails loadUserByUsername(String username);
+*/
+    UserDetails loadUserByUsername(String username);
+
+    User getUserByUsername(String username);
+
+    List<User> getAllUsersWithRole();
+
+    void saveUser(User user);
+
+    void deleteUser(int id);
+
+    User getUserById(int id);
+
+
 }

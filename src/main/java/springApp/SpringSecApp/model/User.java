@@ -36,7 +36,7 @@ public class User {
     private String username;
 
     @NotNull(message = "Password cannot be null")
-    @Size(min = 5, max = 50)
+    @Size(min = 5)
     @Column(name = "password")
     private String password;
 
@@ -87,35 +87,5 @@ public class User {
     @Override
     public String toString() {
         return "User [id=" + id + ", username=" + username + ", email=" + email + ", phoneNumber=" + phoneNumber + ", age=" + age + ", sex=" + sex + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        result = prime * result + ((username == null) ? 0 : username.hashCode());
-        result = prime * result + ((email == null) ? 0 : email.hashCode());
-        result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
-        result = prime * result + age;
-        result = prime * result + ((sex == null) ? 0 : sex.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
-            return false;
-        }
-        User other = (User) obj;
-        return id == other.id &&
-                age == other.age &&
-                Objects.equals(username, other.username) &&
-                Objects.equals(email, other.email) &&
-                Objects.equals(phoneNumber, other.phoneNumber) &&
-                Objects.equals(sex, other.sex);
     }
 }
