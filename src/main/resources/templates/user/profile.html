@@ -6,15 +6,15 @@
 </head>
 <body>
 <header>
-    <h3 th:text="'Information about user: ' + ${user.getUsername()}"></h3>
+    <h3 th:text="'Information about user: ' + ${user.username}"></h3>
 </header>
 <main>
-    <p th:text="'username: ' + ${user.getUsername()()}"></p>
-    <p th:text="'password: ' + ${user.getPassword()}"></p>
-    <p th:text="'email: ' + ${user.getEmail()}"></p>
-    <p th:text="'age: ' + ${user.getAge()}"></p>
-    <p th:text="'phone number: ' + ${user.getPhoneNumber()}"></p>
-    <p th:text="'sex: ' + ${user.getSex()}"></p>
+    <p th:text="'username: ' + ${user.username}"></p>
+    <p th:text="'password: ' + ${user.password}"></p>
+    <p th:text="'email: ' + ${user.email}"></p>
+    <p th:text="'age: ' + ${user.age}"></p>
+    <p th:text="'phone number: ' + ${user.phoneNumber}"></p>
+    <p th:text="'sex: ' + ${user.sex}"></p>
 </main>
 <footer>
     <form th:action="@{/logout}" method="post">

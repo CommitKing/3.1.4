@@ -46,7 +46,6 @@ public class AppStart implements ApplicationRunner {
         user.setAge(20);
         user.setPhoneNumber("89206206466");
         user.addRole(userRole);
-        user.addRole(adminRole);
         entityManager.persist(user);
 
         User admin = new User();
@@ -57,7 +56,6 @@ public class AppStart implements ApplicationRunner {
         admin.setAge(19);
         admin.setPhoneNumber("89004828680");
         admin.addRole(adminRole);
-        admin.addRole(userRole);
         entityManager.persist(admin);
     }
 }

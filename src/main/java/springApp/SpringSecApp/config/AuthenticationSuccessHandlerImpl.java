@@ -22,7 +22,7 @@ public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHa
                 redirectUrl = "/user/profile";
                 break; // Прерываем цикл, так как URL уже найден
             } else if ("ROLE_ADMIN".equals(role)) {
-                redirectUrl = "/admin/edit-panel";
+                redirectUrl = "/admin/users-panel";
                 break; // Прерываем цикл, так как URL уже найден
             }
         }

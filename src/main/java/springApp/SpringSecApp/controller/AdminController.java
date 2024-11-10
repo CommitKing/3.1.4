@@ -19,7 +19,6 @@ import springApp.SpringSecApp.service.UserServiceImpl;
 
 @Controller
 @RequestMapping("/admin")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;

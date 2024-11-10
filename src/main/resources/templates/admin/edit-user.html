@@ -6,11 +6,11 @@
 </head>
 <body>
 <header>
-    <a th:href="@{/admin/edit-panel}">Cancel</a>
+    <a th:href="@{/admin/users-panel}">Cancel</a>
     <h3>Edit</h3>
 </header>
 <main>
-    <form th:method="POST" th:action="@{/admin/edit-panel/edit-user}" th:object="${user}">
+    <form th:method="POST" th:action="@{/admin/users-panel/edit-user}" th:object="${user}">
         <fieldset>
             <legend>form:</legend>
             <br/>
@@ -44,7 +44,7 @@
                            th:value="${role.id}"
                            th:checked="${user.roles.contains(role)}"/>
                 </label>
-                <label th:for="'role_' + ${role.id}" th:text="${role.getRoleName()}"></label>
+                <label th:for="'role_' + ${role.id}" th:text="${role.roleName}"></label>
             </div>
         </fieldset>
         <br/>

@@ -6,11 +6,11 @@
 </head>
 <body>
 <header>
-    <a th:href="@{/admin/edit_panel}">Cancel</a>
+    <a th:href="@{/admin/users-panel}">Cancel</a>
     <h3>Create</h3>
 </header>
 <main>
-    <form action="/admin/add-user" method="post">
+    <form action="/admin/users-panel/add-user" method="post">
         <fieldset>
             <legend>form:</legend>
             <label for="username">Username:</label>
@@ -39,7 +39,7 @@
                                th:name="roles"
                                th:value="${role.id}"/>
                     </label>
-                    <label th:for="'role_' + ${iterStat.index}" th:text="${role.getRoleName()}"></label>
+                    <label th:for="'role_' + ${iterStat.index}" th:text="${role.roleName}"></label>
                 </div>
             </div>
         </fieldset>
