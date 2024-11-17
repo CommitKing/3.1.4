@@ -7,9 +7,9 @@ import springApp.SpringSecApp.model.User;
 import java.util.List;
 
 public interface UserService extends UserDetailsService {
-    /*void save(User user);
+    void save(User user);
 
-    void delete(User user);
+    void delete(int id);
 
     User findByUsername(String username);
 
@@ -18,18 +18,4 @@ public interface UserService extends UserDetailsService {
     User findUserByIdWithRoles(int id);
 
     UserDetails loadUserByUsername(String username);
-*/
-    UserDetails loadUserByUsername(String username);
-
-    User getUserByUsername(String username);
-
-    List<User> getAllUsersWithRole();
-
-    void saveUser(User user);
-
-    void deleteUser(int id);
-
-    User getUserById(int id);
-
-
 }

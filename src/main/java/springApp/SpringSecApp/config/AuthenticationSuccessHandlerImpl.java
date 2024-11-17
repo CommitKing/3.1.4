@@ -14,16 +14,16 @@ import java.io.IOException;
 public class AuthenticationSuccessHandlerImpl implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String redirectUrl = "/login"; // URL по умолчанию
+        String redirectUrl = "/login";
 
         for (GrantedAuthority authority : authentication.getAuthorities()) {
             String role = authority.getAuthority();
             if ("ROLE_USER".equals(role)) {
                 redirectUrl = "/user/profile";
-                break; // Прерываем цикл, так как URL уже найден
+                break;
             } else if ("ROLE_ADMIN".equals(role)) {
-                redirectUrl = "/admin/users-panel";
-                break; // Прерываем цикл, так как URL уже найден
+                redirectUrl = "/admin/admin-panel";
+                break;
             }
         }
 

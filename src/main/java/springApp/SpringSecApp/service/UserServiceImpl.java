@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
-    /*private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -55,59 +55,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void delete(User user) {
-        userRepository.delete(user);
+    public void delete(int id) {
+        userRepository.delete(findUserByIdWithRoles(id));
     }
 
     @Override
     public User findUserByIdWithRoles(int id) {
         return userRepository.findUserByIdWithRoles(id)
-                .orElseThrow(() -> new EntityNotFoundException(id + " not found"));
-    }*/
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User foundedUser = userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
-
-        return new UserDetailsImpl(foundedUser);
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findUserByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(username + " not found"));
-    }
-
-    @Override
-    public List<User> getAllUsersWithRole() {
-        return Optional.of(userRepository.findAllUsersWithRole())
-                .orElseGet(Collections::emptyList);
-    }
-
-    @Override
-    @Transactional
-    public void saveUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Override
-    public void deleteUser(int id) {
-        userRepository.deleteById(id);
-    }
-
-    @Override
-    public User getUserById(int id) {
-        return userRepository.findUserByIdWithRole(id)
                 .orElseThrow(() -> new EntityNotFoundException(id + " not found"));
     }
 }

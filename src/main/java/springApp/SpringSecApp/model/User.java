@@ -17,7 +17,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -83,6 +82,14 @@ public class User {
         }
     }
 
+    public boolean hasRole(String role) {
+        for (Role r : roles) {
+            if (r.getRoleName().equals(role)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public String toString() {
