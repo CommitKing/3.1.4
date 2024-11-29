@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,17 +34,35 @@ public class AdminController {
         model.addAttribute("users", userService.findAllUsersWithRoles());
         model.addAttribute("user", userService.findByUsername(auth.getName()));
         model.addAttribute("roles", roleService.getAllRoles());
+        model.addAttribute("newUser", new User());
+        model.addAttribute("editUser", new User());
         return "admin/admin-panel";
     }
 
     @PostMapping("/admin-panel/add-user")
-    public String addUser(@ModelAttribute("user") @Valid User user) {
+    public String addUser(@ModelAttribute("newUser") @Valid User user, BindingResult result, Model model, Authentication auth) {
+        if (result.hasErrors()) {
+            model.addAttribute("users", userService.findAllUsersWithRoles());
+            model.addAttribute("user", userService.findByUsername(auth.getName()));
+            model.addAttribute("roles", roleService.getAllRoles());
+            model.addAttribute("newUser", user);
+            model.addAttribute("editUser", new User());
+            return "admin/admin-panel";
+        }
         userService.save(user);
         return redirectUrl;
     }
 
     @PostMapping("/admin-panel/edit-user")
-    public String editUser(@ModelAttribute("user") @Valid User user) {
+    public String editUser(@ModelAttribute("editUser") @Valid User user, BindingResult result, Model model, Authentication auth) {
+        if (result.hasErrors()) {
+            model.addAttribute("users", userService.findAllUsersWithRoles());
+            model.addAttribute("user", userService.findByUsername(auth.getName()));
+            model.addAttribute("roles", roleService.getAllRoles());
+            model.addAttribute("newUser", new User());
+            model.addAttribute("editUser", user);
+            return "admin/admin-panel";
+        }
         userService.save(user);
         return redirectUrl;
     }

@@ -30,19 +30,6 @@
 </header>
 <main class="container-fluid">
     <div class="row" style="height: 100vh;">
-        <!-- sidebar -->
-        <!--<nav class="col-2 d-lg-block sidebar" style="padding-top: 15px; height: 100vh; overflow-y: auto;">
-            <ul class="nav flex-column nav-pills">
-                <li class="nav-item v-100">
-                    <a class="nav-link active" aria-current="page" href="/admin/admin-panel">
-                        <div class="text-left">Admin</div>
-                    </a>
-                    <a class="nav-link" aria-current="page" href="/user/profile">
-                        <div class="text-left">User</div>
-                    </a>
-                </li>
-            </ul>
-        </nav>-->
         <nav class="col-2 d-lg-block sidebar" style="padding-top: 15px; height: 100vh; overflow-y: auto;">
             <ul class="nav flex-column nav-pills">
                 <li class="nav-item v-100">
@@ -131,14 +118,13 @@
                                                         <div class="modal-body w-60 m-auto text-center mb-3 fw-bold">
                                                             <form th:method="POST"
                                                                   th:action="@{/admin/admin-panel/edit-user}"
-                                                                  th:object="${user}">
-                                                                <input type="hidden" th:value="*{id}" name="id"/>
-                                                                <input type="hidden" th:value="*{password}"
-                                                                       name="password">
+                                                                  th:object="${editUser}">
+                                                                <input type="hidden" th:value="${user.id}" name="id"/>
+
                                                                 <div>
                                                                     <label for="id"
                                                                            class="form-label">ID</label>
-                                                                    <input type="text" th:value="*{id}"
+                                                                    <input type="text" th:value="${user.id}"
                                                                            id="id" th:name="id"
                                                                            class="form-control" placeholder="id"
                                                                            readonly="readonly" disabled/>
@@ -147,38 +133,68 @@
                                                                 <div>
                                                                     <label for="editEmail"
                                                                            class="form-label">Email</label>
-                                                                    <input type="text" th:value="*{email}"
+                                                                    <input type="text"
+                                                                           th:value="${editUser.id != 0 ? editUser.email : user.email}"
                                                                            class="form-control" id="editEmail"
                                                                            th:name="email"
                                                                            placeholder="Enter the email"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{email}"></p>
+                                                                    </div>
 
                                                                     <label for="editUsername"
                                                                            class="form-label">Username</label>
-                                                                    <input type="text" th:value="*{username}"
+                                                                    <input type="text"
+                                                                           th:value="${editUser.id != 0 ? editUser.username : user.username}"
                                                                            class="form-control" id="editUsername"
                                                                            th:name="username"
                                                                            placeholder="Enter the username"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{username}"></p>
+                                                                    </div>
+
+                                                                    <label for="editPassword"
+                                                                           class="form-label">Password</label>
+                                                                    <input type="text"
+                                                                           class="form-control" id="editPassword"
+                                                                           th:name="password"
+                                                                           placeholder="Enter the password"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{password}"></p>
+                                                                    </div>
 
                                                                     <label for="editSex"
                                                                            class="form-label">Sex</label>
-                                                                    <input type="text" th:value="*{sex}"
+                                                                    <input type="text"
+                                                                           th:value="${editUser.id != 0 ? editUser.sex : user.sex}"
                                                                            class="form-control" id="editSex"
                                                                            th:name="sex"
                                                                            placeholder="Enter the sex"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{sex}"></p>
+                                                                    </div>
 
                                                                     <label for="editAge"
                                                                            class="form-label">Age</label>
-                                                                    <input type="number" th:value="*{age}"
+                                                                    <input type="number"
+                                                                           th:value="${editUser.id != 0 ? editUser.age : user.age}"
                                                                            class="form-control" id="editAge"
                                                                            th:name="age"
                                                                            placeholder="Enter the age"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{age}"></p>
+                                                                    </div>
 
                                                                     <label for="editPhoneNumber"
                                                                            class="form-label">Phone Number</label>
-                                                                    <input type="number" th:value="*{phoneNumber}"
+                                                                    <input type="number"
+                                                                           th:value="${editUser.id != 0 ? editUser.phoneNumber : user.phoneNumber}"
                                                                            class="form-control" id="editPhoneNumber"
                                                                            th:name="phoneNumber"
                                                                            placeholder="Enter the phone number"><br>
+                                                                    <div class="text-danger">
+                                                                        <p th:errors="*{phoneNumber}"></p>
+                                                                    </div>
 
                                                                     <label for="roles">Roles</label>
                                                                     <select id="roles" name="roles"
@@ -316,38 +332,62 @@
                             <h2 style="font-size: 20px">Add new user</h2>
                         </div>
                         <div class="card-body" th:align="center">
-                            <form th:method="POST" th:action="@{/admin/admin-panel/add-user}" th:object="${user}">
+                            <form th:method="POST" th:action="@{/admin/admin-panel/add-user}" th:object="${newUser}">
                                 <div class="mb-3">
                                     <label for="username">Username</label>
-                                    <input id="username" class="form-control w-25" aria-describedby="Enter the username"
-                                           name="username" type="text" placeholder="Username"/>
+                                    <input id="username" class="form-control w-25" name="username" type="text"
+                                           aria-describedby="Enter the username" placeholder="Username"
+                                           th:value="*{username}"/>
+                                    <div class="text-danger">
+                                        <p th:errors="*{username}"></p>
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="password">Password</label>
-                                    <input id="password" class="form-control w-25" aria-describedby="Enter the password"
-                                           name="password" type="password" placeholder="Password"/>
+                                    <input id="password" class="form-control w-25" name="password" type="password"
+                                           aria-describedby="Enter the password" placeholder="Password"
+                                           th:value="*{password}"/>
+                                    <div class="text-danger">
+                                        <p th:errors="*{password}"></p>
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="email">Email</label>
                                     <input id="email" class="form-control w-25" aria-describedby="Enter the email"
-                                           name="email" type="email" placeholder="Email"/>
+                                           name="email" type="email" placeholder="Email" th:value="*{email}"/>
+                                    <div th:if="${#fields.hasErrors('email')}" class="text-danger">
+                                        <p th:errors="*{email}"></p>
+                                    </div>
                                 </div>
+
                                 <div class="mb-3">
                                     <label for="sex">Sex</label>
                                     <input id="sex" class="form-control w-25" aria-describedby="Enter the sex"
-                                           name="sex" type="text" placeholder="Sex"/>
+                                           name="sex" type="text" placeholder="Sex" th:value="*{sex}"/>
+                                    <div th:if="${#fields.hasErrors('sex')}" class="text-danger">
+                                        <p th:errors="*{sex}"></p>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="age">Age</label>
                                     <input id="age" class="form-control w-25" aria-describedby="Enter the age"
-                                           name="age" type="number" placeholder="Age"/>
+                                           name="age" type="number" placeholder="Age" th:value="*{age}"/>
+                                    <div th:if="${#fields.hasErrors('age')}" class="text-danger">
+                                        <p th:errors="*{age}"></p>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="phoneNumber">Phone number</label>
                                     <input id="phoneNumber" class="form-control w-25" aria-describedby="Enter the phone"
-                                           name="phoneNumber" type="number" placeholder="Phone number"/>
+                                           name="phoneNumber" type="number" placeholder="Phone number"
+                                           th:value="*{phoneNumber}"/>
+                                    <div th:if="${#fields.hasErrors('phoneNumber')}" class="text-danger">
+                                        <p th:errors="*{phoneNumber}"></p>
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">

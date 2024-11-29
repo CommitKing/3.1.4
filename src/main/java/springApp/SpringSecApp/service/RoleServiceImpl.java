@@ -2,6 +2,7 @@ package springApp.SpringSecApp.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import springApp.SpringSecApp.model.Role;
 import springApp.SpringSecApp.repository.RoleRepository;
 
@@ -19,9 +20,9 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Role> getAllRoles() {
         return Optional.of(roleRepository.findAll())
                 .orElseGet(Collections::emptyList);
-
     }
 }
