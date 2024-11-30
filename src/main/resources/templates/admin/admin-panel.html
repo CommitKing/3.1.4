@@ -106,7 +106,8 @@
                                             <!-- edit -->
                                             <div class="modal fade" th:id="'editModal' + ${user.id}"
                                                  tabindex="-1" role="dialog" aria-labelledby="editModalLabel"
-                                                 aria-hidden="true">
+                                                 aria-hidden="true"
+                                                 th:classappend="${openEditModal} ? 'show d-block' : ''">
                                                 <div class="modal-dialog">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
@@ -326,7 +327,7 @@
                 </div>
 
                 <!-- new -->
-                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="new-user" tabindex="0">
+                <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="new-user" tabindex="0" th:classappend="${openAddModal} ? 'show d-block' : ''">
                     <div class="card" id="add_new-user">
                         <div class="card-header">
                             <h2 style="font-size: 20px">Add new user</h2>

@@ -47,6 +47,7 @@ public class AdminController {
             model.addAttribute("roles", roleService.getAllRoles());
             model.addAttribute("newUser", user);
             model.addAttribute("editUser", new User());
+            model.addAttribute("openAddModal", true);
             return "admin/admin-panel";
         }
         userService.save(user);
@@ -61,6 +62,7 @@ public class AdminController {
             model.addAttribute("roles", roleService.getAllRoles());
             model.addAttribute("newUser", new User());
             model.addAttribute("editUser", user);
+            model.addAttribute("openEditModal", true);
             return "admin/admin-panel";
         }
         userService.save(user);
