@@ -35,9 +35,6 @@ public class AppStart implements ApplicationRunner {
         Role adminRole = entityManager.createQuery("SELECT r FROM Role r WHERE r.roleName = :name", Role.class)
                 .setParameter("name", "ADMIN")
                 .getSingleResult();
-        System.out.println(userRole);
-        System.out.println(adminRole);
-        System.out.println(userRole.getAuthority());
         User user = new User();
         user.setUsername("eugene");
         user.setEmail("salnikovzena@gmail.com");
@@ -56,6 +53,7 @@ public class AppStart implements ApplicationRunner {
         admin.setAge(19);
         admin.setPhoneNumber("89004828680");
         admin.addRole(adminRole);
+        admin.addRole(userRole);
         entityManager.persist(admin);
     }
 }

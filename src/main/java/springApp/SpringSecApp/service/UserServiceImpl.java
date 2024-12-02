@@ -9,24 +9,34 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springApp.SpringSecApp.UserDetails.UserDetailsImpl;
+import springApp.SpringSecApp.custom_exceptions.UserNotFoundException;
+import springApp.SpringSecApp.dto.UserDTO;
+import springApp.SpringSecApp.model.Role;
 import springApp.SpringSecApp.model.User;
+import springApp.SpringSecApp.repository.RoleRepository;
 import springApp.SpringSecApp.repository.UserRepository;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserService selfService;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, @Lazy PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, @Lazy PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.selfService = this;
+        this.roleRepository = roleRepository;
     }
 
     @Override
@@ -54,9 +64,41 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void save(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    public void save(UserDTO userDTO) {
+        User userToSave = new User();
+        userToSave.setUsername(userDTO.getUsername());
+        userToSave.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userToSave.setAge(userDTO.getAge());
+        userToSave.setEmail(userDTO.getEmail());
+        userToSave.setSex(userDTO.getSex());
+        userToSave.setPhoneNumber(String.valueOf(userDTO.getPhoneNumber()));
+        Set<Role> roles = userDTO.getRoles().stream()
+                .map(roleRepository::findByName)
+                .collect(Collectors.toSet());
+        userToSave.setRoles(roles);
+
+        userRepository.save(userToSave);
+    }
+
+    @Override
+    @Transactional
+    public void update(int id, UserDTO userDTO) {
+        User userToUpdate = userRepository.findUserByIdWithRoles(id)
+                .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        userToUpdate.setUsername(userDTO.getUsername());
+        userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        userToUpdate.setEmail(userDTO.getEmail());
+        userToUpdate.setAge(userDTO.getAge());
+        userToUpdate.setPhoneNumber(userDTO.getPhoneNumber());
+        userToUpdate.setSex(userDTO.getSex());
+
+        Set<Role> roles = userDTO.getRoles().stream()
+                .map(roleRepository::findByName)
+                .collect(Collectors.toSet());
+        userToUpdate.setRoles(roles);
+
+        userRepository.save(userToUpdate);
     }
 
     @Override
@@ -69,6 +111,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true)
     public User findUserByIdWithRoles(int id) {
         return userRepository.findUserByIdWithRoles(id)
-                .orElseThrow(() -> new EntityNotFoundException(id + " not found"));
+                .orElseThrow(() -> new UserNotFoundException(id + " not found"));
     }
 }

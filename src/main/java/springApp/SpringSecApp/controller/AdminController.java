@@ -1,27 +1,35 @@
 package springApp.SpringSecApp.controller;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import springApp.SpringSecApp.custom_exceptions.InvalidUserDataException;
+import springApp.SpringSecApp.dto.UserDTO;
+import springApp.SpringSecApp.model.Role;
 import springApp.SpringSecApp.model.User;
 import springApp.SpringSecApp.service.RoleService;
 import springApp.SpringSecApp.service.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Controller
-@RequestMapping("/admin")
+
+@RestController
+@RequestMapping("/api/admin")
 public class AdminController {
     private final UserService userService;
     private final RoleService roleService;
-    private static final String redirectUrl = "redirect:/admin/admin-panel";
 
     @Autowired
     public AdminController(UserService userService, RoleService roleService) {
@@ -29,49 +37,50 @@ public class AdminController {
         this.roleService = roleService;
     }
 
-    @GetMapping("/admin-panel")
-    public String usersPanel(Model model, Authentication auth) {
-        model.addAttribute("users", userService.findAllUsersWithRoles());
-        model.addAttribute("user", userService.findByUsername(auth.getName()));
-        model.addAttribute("roles", roleService.getAllRoles());
-        model.addAttribute("newUser", new User());
-        model.addAttribute("editUser", new User());
-        return "admin/admin-panel";
+    @GetMapping
+    public List<User> getUsers() {
+        return userService.findAllUsersWithRoles();
     }
 
-    @PostMapping("/admin-panel/add-user")
-    public String addUser(@ModelAttribute("newUser") @Valid User user, BindingResult result, Model model, Authentication auth) {
-        if (result.hasErrors()) {
-            model.addAttribute("users", userService.findAllUsersWithRoles());
-            model.addAttribute("user", userService.findByUsername(auth.getName()));
-            model.addAttribute("roles", roleService.getAllRoles());
-            model.addAttribute("newUser", user);
-            model.addAttribute("editUser", new User());
-            model.addAttribute("openAddModal", true);
-            return "admin/admin-panel";
+    @GetMapping("/{id}")
+    public User getUser(@PathVariable int id) {
+        return userService.findUserByIdWithRoles(id);
+    }
+
+    @GetMapping("/roles")
+    public List<Role> getRoles() {
+        return roleService.getAllRoles();
+    }
+
+    @PostMapping
+    public ResponseEntity<HttpStatus> addUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            throw new InvalidUserDataException("Invalid user data: " + errors);
         }
-        userService.save(user);
-        return redirectUrl;
+        userService.save(userDTO);
+        return ResponseEntity.ok(HttpStatus.CREATED);
     }
 
-    @PostMapping("/admin-panel/edit-user")
-    public String editUser(@ModelAttribute("editUser") @Valid User user, BindingResult result, Model model, Authentication auth) {
-        if (result.hasErrors()) {
-            model.addAttribute("users", userService.findAllUsersWithRoles());
-            model.addAttribute("user", userService.findByUsername(auth.getName()));
-            model.addAttribute("roles", roleService.getAllRoles());
-            model.addAttribute("newUser", new User());
-            model.addAttribute("editUser", user);
-            model.addAttribute("openEditModal", true);
-            return "admin/admin-panel";
+
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> editUser(@PathVariable("id") int id, @RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream()
+                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            throw new InvalidUserDataException("Invalid user data: " + errors);
         }
-        userService.save(user);
-        return redirectUrl;
+        userService.update(id, userDTO);
+        return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @PostMapping("/admin-panel/delete-user")
-    public String deleteUser(@RequestParam("id") int id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id") int id) {
         userService.delete(id);
-        return redirectUrl;
+        return ResponseEntity.ok(HttpStatus.OK);
     }
+
 }
