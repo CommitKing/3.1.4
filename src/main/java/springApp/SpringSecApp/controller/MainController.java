@@ -50,7 +50,7 @@ public class MainController {
     }
 
     @GetMapping("/")
-    public String homePage(Model model) {
+    public String homePage() {
         return "redirect:/login";
     }
 

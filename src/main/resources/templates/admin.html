@@ -96,31 +96,37 @@
                                                     <input type="text"
                                                            class="form-control form__username" id="editName"
                                                            name="username" required>
+                                                    <div id="editUsernameError" class="error-message"></div>
 
                                                     <label for="editPassword"
                                                            class="form-label">Password</label>
                                                     <input type="password" id="editPassword"
                                                            class="form-control" name="password">
+                                                    <div id="editPasswordError" class="error-message"></div>
 
                                                     <label for="editEmail"
                                                            class="form-label">Email</label>
                                                     <input type="email" id="editEmail"
                                                            class="form-control" name="email">
+                                                    <div id="editEmailError" class="error-message"></div>
 
                                                     <label for="editAge" class="form-label">Age</label>
                                                     <input type="number"
                                                            class="form-control" id="editAge" min="1"
                                                            name="age" required pattern="\d+">
+                                                    <div id="editAgeError" class="error-message"></div>
 
                                                     <label for="editSex"
                                                            class="form-label">Sex</label>
                                                     <input type="text" id="editSex"
                                                            class="form-control" name="sex">
+                                                    <div id="editSexError" class="error-message"></div>
 
                                                     <label for="editPhoneNumber"
                                                            class="form-label">Phone number</label>
                                                     <input type="text" id="editPhoneNumber"
                                                            class="form-control" name="phoneNumber">
+                                                    <div id="editPhoneNumberError" class="error-message"></div>
 
                                                     <div class="form-select__container">
                                                         <label for="editRoles" class="form-label">Roles</label>
@@ -128,6 +134,8 @@
                                                                 class="form-select">
                                                         </select>
                                                     </div>
+                                                    <div id="editRolesError" class="error-message"></div>
+
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary"
                                                                 data-bs-dismiss="modal">Close
@@ -227,26 +235,32 @@
                                     <label for="inputName" class="form-label">Username</label>
                                     <input type="text" class="form-control form__username" id="inputName"
                                            placeholder="Enter the username" name="username" required>
+                                    <div id="addUsernameError" class="error-message"></div>
 
                                     <label for="inputPassword" class="form-label">Password</label>
                                     <input type="password" id="inputPassword" class="form-control"
                                            placeholder="Enter the password" name="password" required>
+                                    <div id="addPasswordError" class="error-message"></div>
 
                                     <label for="inputEmail" class="form-label">Email</label>
                                     <input type="email" class="form-control" id="inputEmail"
                                            placeholder="Enter the email" required>
+                                    <div id="addEmailError" class="error-message"></div>
 
                                     <label for="inputAge" class="form-label">Age</label>
                                     <input type="text" class="form-control" id="inputAge" placeholder="Enter the age"
                                            min="1" name="age" required pattern="\d+">
+                                    <div id="addAgeError" class="error-message"></div>
 
                                     <label for="inputSex" class="form-label">Sex</label>
                                     <input type="text" class="form-control" id="inputSex"
                                            placeholder="Enter the sex" required>
+                                    <div id="addSexError" class="error-message"></div>
 
                                     <label for="inputPhoneNumber" class="form-label">Phone number</label>
                                     <input type="number" class="form-control" id="inputPhoneNumber"
                                            placeholder="Enter the phone number" required>
+                                    <div id="addPhoneNumberError" class="error-message"></div>
 
                                     <div class="form-select__container">
                                         Role
@@ -254,6 +268,8 @@
                                                 name="roles" id="inputRoles">
                                         </select>
                                     </div>
+                                    <div id="addRolesError" class="error-message"></div>
+
                                     <button type="submit" class="btn btn-success">Add new user</button>
                                 </form>
                             </div>

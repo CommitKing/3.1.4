@@ -109,8 +109,16 @@ document.getElementById('editUserForm').addEventListener('submit', async (event)
         console.log('Response Text:', responseText);
 
         if (!response.ok) {
-            const errorData = JSON.parse(responseText);
-            throw new Error('Failed to update user: ' + (errorData.message || 'Unknown error'));
+            const invalidUser = JSON.parse(responseText)
+            console.log(invalidUser)
+            document.getElementById('editUsernameError').innerText = invalidUser.usernameError
+            document.getElementById('editAgeError').innerText = invalidUser.ageError
+            document.getElementById("editPasswordError").innerText = invalidUser.passwordError
+            document.getElementById("editEmailError").innerText = invalidUser.emailError
+            document.getElementById("editSexError").innerText = invalidUser.sexError
+            document.getElementById("editPhoneNumberError").innerText = invalidUser.phoneNumberError
+            document.getElementById("editRolesError").innerText = invalidUser.rolesError
+            throw new Error('Failed to update user');
         }
 
         const updatedUser = JSON.parse(responseText);
@@ -205,8 +213,16 @@ async function addUser() {
         console.log('Response Text:', responseText);
 
         if (!response.ok) {
-            const errorData = JSON.parse(responseText);
-            throw new Error('Failed to add user: ' + (errorData.message || 'Unknown error'));
+            const invalidUser = JSON.parse(responseText)
+            console.log(invalidUser)
+            document.getElementById('addUsernameError').innerText = invalidUser.usernameError
+            document.getElementById('addAgeError').innerText = invalidUser.ageError
+            document.getElementById("addPasswordError").innerText = invalidUser.passwordError
+            document.getElementById("addEmailError").innerText = invalidUser.emailError
+            document.getElementById("addSexError").innerText = invalidUser.sexError
+            document.getElementById("addPhoneNumberError").innerText = invalidUser.phoneNumberError
+            document.getElementById("addRolesError").innerText = invalidUser.rolesError
+            throw new Error('Failed to add user');
         }
 
         const newUser = JSON.parse(responseText);

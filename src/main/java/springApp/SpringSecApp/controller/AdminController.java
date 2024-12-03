@@ -55,10 +55,7 @@ public class AdminController {
     @PostMapping
     public ResponseEntity<HttpStatus> addUser(@RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream()
-                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                    .collect(Collectors.joining(", "));
-            throw new InvalidUserDataException("Invalid user data: " + errors);
+            throw new InvalidUserDataException(bindingResult);
         }
         userService.save(userDTO);
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -68,10 +65,7 @@ public class AdminController {
     @PutMapping("/{id}")
     public ResponseEntity<HttpStatus> editUser(@PathVariable("id") int id, @RequestBody @Valid UserDTO userDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream()
-                    .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                    .collect(Collectors.joining(", "));
-            throw new InvalidUserDataException("Invalid user data: " + errors);
+            throw new InvalidUserDataException(bindingResult);
         }
         userService.update(id, userDTO);
         return ResponseEntity.ok(HttpStatus.OK);

@@ -73,3 +73,13 @@ a {
 .table__users {
 
 }
+
+.error-message {
+    color: #d9534f; /* Красный цвет для ошибок */
+    font-family: 'Arial', sans-serif; /* Удобочитаемый шрифт */
+    font-size: 14px; /* Размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    margin-top: 5px; /* Отступ от поля ввода */
+    padding-left: 5px; /* Лёгкий отступ слева */
+    line-height: 1.5; /* Удобное расстояние между строками */
+}
