@@ -57,7 +57,7 @@ async function editUser(userId) {
         document.getElementById('editID').value = user.id;
         document.getElementById('editName').value = user.username;
         document.getElementById('editAge').value = user.age;
-        document.getElementById("editPassword").value = user.password
+        // ТУТ Я УДАЛИЛ ПАРОЛЬ ДЛЯ ВЫВОДА НА ФОРМУ
         document.getElementById("editEmail").value = user.email
         document.getElementById("editSex").value = user.sex
         document.getElementById("editPhoneNumber").value = user.phoneNumber
@@ -88,16 +88,14 @@ document.getElementById('editUserForm').addEventListener('submit', async (event)
     // ТУТ ДОБАВИТЬ ОСТАЛЬНОЕ ЗАПОЛНЕНИЕ
     const userId = document.getElementById('editID').value;
     const userData = {
-        id: userId,
         username: document.getElementById('editName').value,
         age: parseInt(document.getElementById('editAge').value),
         password: document.getElementById('editPassword').value,
         sex: document.getElementById("editSex").value,
         email: document.getElementById("editEmail").value,
-        phoneNumber: document.getElementById("editPhoneNumber"),
-        roles: Array.from(document.getElementById('inputRoles').selectedOptions).map(option => option.textContent)
+        phoneNumber: document.getElementById("editPhoneNumber").value,
+        roles: Array.from(document.getElementById('editRoles').selectedOptions).map(option => option.textContent)
     };
-
     try {
         const response = await fetch(`/api/admin/${userId}`, {
             method: 'PUT',
@@ -139,7 +137,7 @@ async function showDeleteModal(userId) {
         document.getElementById('deleteID').value = user.id;
         document.getElementById('deleteName').value = user.username;
         document.getElementById('deleteAge').value = user.age;
-        document.getElementById("deletePassword").value = user.password
+        // ТУТ Я УДАЛИЛ ПАРОЛЬ ДЛЯ ВЫВОДА НА ФОРМУ
         document.getElementById("deleteEmail").value = user.email
         document.getElementById("deleteSex").value = user.sex
         document.getElementById("deletePhoneNumber").value = user.phoneNumber
@@ -147,7 +145,7 @@ async function showDeleteModal(userId) {
         rolesContainer.innerHTML = '';
         user.roles.forEach(role => {
             const option = document.createElement('option');
-            option.textContent = role.name;
+            option.textContent = role.roleName;
             rolesContainer.appendChild(option);
         });
 
