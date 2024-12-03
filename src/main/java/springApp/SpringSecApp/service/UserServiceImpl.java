@@ -1,6 +1,5 @@
 package springApp.SpringSecApp.service;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +8,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springApp.SpringSecApp.UserDetails.UserDetailsImpl;
+import springApp.SpringSecApp.custom_exceptions.InvalidUserDataException;
+import springApp.SpringSecApp.custom_exceptions.NonUniqueDataException;
 import springApp.SpringSecApp.custom_exceptions.UserNotFoundException;
 import springApp.SpringSecApp.dto.UserDTO;
 import springApp.SpringSecApp.model.Role;
@@ -16,13 +17,11 @@ import springApp.SpringSecApp.model.User;
 import springApp.SpringSecApp.repository.RoleRepository;
 import springApp.SpringSecApp.repository.UserRepository;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -65,6 +64,14 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void save(UserDTO userDTO) {
+        if (userRepository.existsByUsername(userDTO.getUsername())) {
+            throw new NonUniqueDataException("username");
+        } else if (userRepository.existsByEmail(userDTO.getEmail())) {
+            throw new NonUniqueDataException("email");
+        } else if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+            throw new NonUniqueDataException("phoneNumber");
+        }
+
         User userToSave = new User();
         userToSave.setUsername(userDTO.getUsername());
         userToSave.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -85,6 +92,17 @@ public class UserServiceImpl implements UserService {
     public void update(int id, UserDTO userDTO) {
         User userToUpdate = userRepository.findUserByIdWithRoles(id)
                 .orElseThrow(() -> new UserNotFoundException("User with id " + id + " not found"));
+
+        if (userRepository.existsByUsername(userDTO.getUsername()) &&
+                !userToUpdate.getUsername().equals(userDTO.getUsername())) {
+            throw new NonUniqueDataException("username");
+        } else if (userRepository.existsByEmail(userDTO.getEmail()) &&
+                !userToUpdate.getEmail().equals(userDTO.getEmail())) {
+            throw new NonUniqueDataException("email");
+        } else if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber()) &&
+                !userToUpdate.getPhoneNumber().equals(userDTO.getPhoneNumber())) {
+            throw new NonUniqueDataException("phoneNumber");
+        }
 
         userToUpdate.setUsername(userDTO.getUsername());
         userToUpdate.setPassword(passwordEncoder.encode(userDTO.getPassword()));

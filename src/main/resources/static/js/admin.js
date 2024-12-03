@@ -120,7 +120,13 @@ document.getElementById('editUserForm').addEventListener('submit', async (event)
             document.getElementById("editRolesError").innerText = invalidUser.rolesError
             throw new Error('Failed to update user');
         }
-
+        document.getElementById('editUsernameError').innerText = ""
+        document.getElementById('editAgeError').innerText = ""
+        document.getElementById("editPasswordError").innerText = ""
+        document.getElementById("editEmailError").innerText = ""
+        document.getElementById("editSexError").innerText = ""
+        document.getElementById("editPhoneNumberError").innerText = ""
+        document.getElementById("editRolesError").innerText = ""
         const updatedUser = JSON.parse(responseText);
         console.log('User updated successfully:', updatedUser);
         await loadUsers();
@@ -224,7 +230,13 @@ async function addUser() {
             document.getElementById("addRolesError").innerText = invalidUser.rolesError
             throw new Error('Failed to add user');
         }
-
+        document.getElementById('addUsernameError').innerText = ""
+        document.getElementById('addAgeError').innerText = ""
+        document.getElementById("addPasswordError").innerText = ""
+        document.getElementById("addEmailError").innerText = ""
+        document.getElementById("addSexError").innerText = ""
+        document.getElementById("addPhoneNumberError").innerText = ""
+        document.getElementById("addRolesError").innerText = ""
         const newUser = JSON.parse(responseText);
         console.log('User added successfully:', newUser);
         await loadUsers();

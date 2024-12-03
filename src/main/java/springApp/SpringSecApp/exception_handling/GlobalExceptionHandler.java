@@ -1,20 +1,15 @@
 package springApp.SpringSecApp.exception_handling;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import springApp.SpringSecApp.custom_exceptions.InvalidUserDataException;
+import springApp.SpringSecApp.custom_exceptions.NonUniqueDataException;
 import springApp.SpringSecApp.custom_exceptions.UserNotFoundException;
 import springApp.SpringSecApp.dto.InvalidUserDTO;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 
 @ControllerAdvice
@@ -56,6 +51,26 @@ public class GlobalExceptionHandler {
                 default:
                     System.out.println("Unknown field: " + fieldName);
                     break;
+            }
+        }
+        return new ResponseEntity<>(invalidUserDTO, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NonUniqueDataException.class)
+    public ResponseEntity<InvalidUserDTO> handleException(NonUniqueDataException exception) {
+        InvalidUserDTO invalidUserDTO = new InvalidUserDTO();
+        switch (exception.getMessage()) {
+            case "username": {
+                invalidUserDTO.setUsernameError("Имя пользователя уже используется");
+                break;
+            }
+            case "email": {
+                invalidUserDTO.setEmailError("Данная почта уже используется");
+                break;
+            }
+            case "phoneNumber": {
+                invalidUserDTO.setPhoneNumberError("Введенный телефон уже используется");
+                break;
             }
         }
         return new ResponseEntity<>(invalidUserDTO, HttpStatus.BAD_REQUEST);

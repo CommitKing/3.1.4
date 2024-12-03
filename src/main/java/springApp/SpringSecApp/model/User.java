@@ -37,26 +37,26 @@ public class User {
     private int id;
 
     @NotNull(message = "Username cannot be null")
-    @Size(min = 5, max = 20, message = "username length must be between 5 and 20")
+    @Size(min = 5, max = 20, message = "Имя пользователя должно быть от 5 до 20 символов")
     @Column(name = "username", unique = true)
     private String username;
 
     @NotNull(message = "Password cannot be null")
-    @Size(min = 5, message = "password length must be 5 and more")
+    @Size(min = 5, message = "Пароль должен содержать минимум 5 символов")
     @Column(name = "password")
     private String password;
 
     @NotNull(message = "Email cannot be null")
-    @Email(message = "This email is not right")
+    @Email(message = "Неверный email")
     @Column(name = "email", unique = true)
     private String email;
 
-    @Pattern(regexp = "\\+?[0-9]{10,15}", message = "Invalid phone number")
+    @Pattern(regexp = "\\+?[0-9]{10,15}", message = "Неверный номер телефона")
     @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
     @NotNull(message = "Age cannot be null")
-    @Min(value = 7, message = "Age must be at least 7")
+    @Min(value = 7, message = "Минимальный возраст: 7 лет")
     @Column(name = "age")
     private int age;
 

@@ -19,4 +19,10 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Query("select u from User u left join fetch u.roles where u.id = :id")
     Optional<User> findUserByIdWithRoles(int id);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhoneNumber(String phoneNumber);
 }
