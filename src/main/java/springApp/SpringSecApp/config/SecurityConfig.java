@@ -34,12 +34,13 @@ public class SecurityConfig {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/login/**", "/api/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login/**", "/api/**", "/css/**", "/js/**", "/images/**",
+                                "/public/**", "/static/**", "/static/public/**").permitAll()
                         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated())
                 .formLogin(login -> login
-                        .loginPage("/login")
+                        .loginPage("/login.html")
                         .successHandler(authenticationSuccessHandler)
                         .permitAll())
                 .logout(logout -> logout
